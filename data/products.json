@@ -403,9 +403,9 @@
       {
         "store": "Talabat Mart",
         "product": "Coca Cola Soft Drink Pet, 0.95L",
-        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/beverages/soft-drinks?aid=6963",
+        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/product/coca-cola-soft-drink-pet-095l/s/910232?aid=6963",
         "price_egp": 25.5,
-        "link_kind": "category"
+        "link_kind": "product"
       }
     ]
   },
@@ -446,9 +446,9 @@
       {
         "store": "Talabat Mart",
         "product": "Pepsi Soft Drink, 390ml",
-        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/beverages/soft-drinks?aid=6963",
+        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/product/pepsi-soft-drink-390ml/s/902248?aid=6963",
         "price_egp": 13.0,
-        "link_kind": "category"
+        "link_kind": "product"
       }
     ]
   },
@@ -491,9 +491,9 @@
       {
         "store": "Talabat Mart",
         "product": "Schweppes Tonic Water Twist Off, 250ml",
-        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/beverages/water?aid=6963",
+        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/product/schweppes-tonic-water-twist-off-250ml/s/900090?aid=6963",
         "price_egp": 25.5,
-        "link_kind": "category"
+        "link_kind": "product"
       }
     ]
   },
@@ -557,17 +557,10 @@
       },
       {
         "store": "Spinneys",
-        "product": "Chipsy Potato Chips With Salt - 65G",
-        "url": "https://spinneys-egypt.com/en/335544",
+        "product": "Chipsy Potato Chips With Tomato - 65G",
+        "url": "https://spinneys-egypt.com/en/chipsy-potatoes-chips-with-tomato-178-gm",
         "price_egp": 10.0,
         "link_kind": "product"
-      },
-      {
-        "store": "Talabat Mart",
-        "product": "Chipsy Cheese & Onion Flavor Chips, 55g",
-        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/snacks-chocolate/chips-dips?aid=6963",
-        "price_egp": 10.0,
-        "link_kind": "category"
       }
     ]
   },
@@ -598,13 +591,6 @@
         "url": "https://www.carrefouregypt.com/mafegy/en/tortilla/doritos-sweet-chili-70g/p/654169?offer=offer_carrefour_&sid=SLOTTED&sellerId=0000",
         "price_egp": 9.99,
         "link_kind": "product"
-      },
-      {
-        "store": "Talabat Mart",
-        "product": "Doritos Nacho Cheese Tortilla Chips, 59g",
-        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/snacks-chocolate/chips-dips?aid=6963",
-        "price_egp": 10.0,
-        "link_kind": "category"
       }
     ]
   },
@@ -634,13 +620,6 @@
         "url": "https://www.carrefouregypt.com/mafegy/en/chocolates/galaxy-milk-chocolate-36g/p/251334?offer=offer_carrefour_&sid=SLOTTED&sellerId=0000",
         "price_egp": 34.99,
         "link_kind": "product"
-      },
-      {
-        "store": "Talabat Mart",
-        "product": "Galaxy Caramel Chocolate Bar, 34g",
-        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/snacks-chocolate/chocolate?aid=6963",
-        "price_egp": 40.0,
-        "link_kind": "category"
       }
     ]
   },
@@ -850,9 +829,9 @@
       {
         "store": "Talabat Mart",
         "product": "M&M's Milk Chocolate, 45g",
-        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/snacks-chocolate/chocolate?aid=6963",
+        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/product/mms-milk-chocolate-45g/s/901331?aid=6963",
         "price_egp": 50.0,
-        "link_kind": "category"
+        "link_kind": "product"
       }
     ]
   },
@@ -893,9 +872,9 @@
       {
         "store": "Talabat Mart",
         "product": "Maltesers Chocolate, 37g",
-        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/snacks-chocolate/chocolate?aid=6963",
+        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/product/maltesers-chocolate-37g/s/901329?aid=6963",
         "price_egp": 50.0,
-        "link_kind": "category"
+        "link_kind": "product"
       }
     ]
   },
@@ -967,9 +946,9 @@
       {
         "store": "Talabat Mart",
         "product": "Todo Bomb Chocolate Cake with Cream Filling and Cocoa Coating, 50g",
-        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/snacks-chocolate/cakes?aid=6963",
+        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/product/todo-bomb-chocolate-cake-with-cream-filling-and-cocoa-coating-50g/s/903149?aid=6963",
         "price_egp": 15.0,
-        "link_kind": "category"
+        "link_kind": "product"
       }
     ]
   },
@@ -1048,9 +1027,9 @@
       {
         "store": "Talabat Mart",
         "product": "HOHOs King rolled Chocolate Cake with Cream, 60g",
-        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/snacks-chocolate/cakes?aid=6963",
+        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/product/hohos-king-rolled-chocolate-cake-with-cream-60g/s/925864?aid=6963",
         "price_egp": 10.0,
-        "link_kind": "category"
+        "link_kind": "product"
       }
     ]
   },
@@ -1092,9 +1071,9 @@
       {
         "store": "Talabat Mart",
         "product": "Twinkies Super Original Cream Cake, 50g",
-        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/snacks-chocolate/cakes?aid=6963",
+        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/product/twinkies-super-original-cream-cake-50g/s/929689?aid=6963",
         "price_egp": 10.0,
-        "link_kind": "category"
+        "link_kind": "product"
       }
     ]
   },
@@ -1161,6 +1140,13 @@
         "url": "https://www.carrefouregypt.com/mafegy/en/canned-potato-chips/pringels-potato-salt-vinegar40g/p/470487?offer=offer_carrefour_&sid=SLOTTED&sellerId=0000",
         "price_egp": 46.99,
         "link_kind": "product"
+      },
+      {
+        "store": "Spinneys",
+        "product": "Pringles Potato Chips with Salt and Vinegar - 40Gm",
+        "url": "https://spinneys-egypt.com/en/pringles-potato-chips-w-salt-vinegar-40gm",
+        "price_egp": 47.0,
+        "link_kind": "product"
       }
     ]
   },
@@ -1195,9 +1181,9 @@
       },
       {
         "store": "Spinneys",
-        "product": "Juhayna Classic Juice With Apple - 235 Ml",
-        "url": "https://spinneys-egypt.com/en/juhayna-classic-apple-juice-235-ml",
-        "price_egp": 9.95,
+        "product": "Juhayna Pure Red Grape Juice - Preservatives Free, No Added Sugar - 235 Ml",
+        "url": "https://spinneys-egypt.com/en/juhayna-pure-red-grapes-juice-235-ml",
+        "price_egp": 19.95,
         "link_kind": "product"
       }
     ]
@@ -1303,13 +1289,6 @@
         "url": "https://www.carrefouregypt.com/mafegy/en/chewing-gum/mentos-fresh-gum-3d-watermelon-8-5g/p/532317?offer=offer_carrefour_&sid=SLOTTED&sellerId=0000",
         "price_egp": 13.99,
         "link_kind": "product"
-      },
-      {
-        "store": "Talabat Mart",
-        "product": "Mentos 3D Watermelon Sugar Free Gum, 8.5g",
-        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/snacks-chocolate/candy-gums?aid=6963",
-        "price_egp": 14.0,
-        "link_kind": "category"
       }
     ]
   },
@@ -1343,10 +1322,10 @@
       },
       {
         "store": "Talabat Mart",
-        "product": "Wrigley's Extra Gum Peppermint Sugar Free Chewing Gum, 10 Pellets, 14g",
-        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/snacks-chocolate/candy-gums?aid=6963",
+        "product": "Wrigley's Extra Gum Spearmint Sugar Free Chewing Gum, 10 Pellets, 14g",
+        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/product/wrigleys-extra-gum-spearmint-sugar-free-chewing-gum-10-pellets-14g/s/901342?aid=6963",
         "price_egp": 15.0,
-        "link_kind": "category"
+        "link_kind": "product"
       }
     ]
   },
@@ -1460,9 +1439,9 @@
       {
         "store": "Talabat Mart",
         "product": "Red Bull Energy Drink, 250ml",
-        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/beverages/sports-energy-drinks?aid=6963",
+        "url": "https://www.talabat.com/egypt/grocery/801350/talabat-mart-el-suez/product/red-bull-energy-drink-250ml/s/903963?aid=6963",
         "price_egp": 60.0,
-        "link_kind": "category"
+        "link_kind": "product"
       },
       {
         "store": "Mahmoud El Far",

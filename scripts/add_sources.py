@@ -92,6 +92,34 @@ def size_matches_baseline(candidate, baseline_size: str) -> bool:
     return ratio <= MAX_SIZE_RATIO
 
 
+# Flavour words that distinguish otherwise identical products. A card naming Tomato
+# Chipsy must not link to the Salt one: the price is the same, but the link plainly shows
+# a different bag, which reads as the app citing the wrong thing.
+FLAVOUR_RE = re.compile(
+    r"\b(tomato|salt|vinegar|cheese|onion|chilli|chili|spicy|hot|sweet|sour|bbq|barbecue|"
+    r"ketchup|paprika|lemon|lime|mint|orange|mango|berry|strawberry|cherry|peach|apple|"
+    r"pineapple|guava|coconut|vanilla|caramel|hazelnut|almond|peanut|nacho|original|"
+    r"classic|plain|milk|dark|white|cocoa|coffee)\b",
+    re.I,
+)
+
+
+def flavours(name: str) -> set[str]:
+    return {m.group(0).lower() for m in FLAVOUR_RE.finditer(name)}
+
+
+def flavour_matches(candidate_name: str, baseline_name: str) -> bool:
+    """Whether two listings describe the same flavour of the same product.
+
+    Only decides when both names actually state a flavour. If either is silent the check
+    abstains, because "Chipsy Potato Chips" says nothing that contradicts "Chipsy Tomato".
+    """
+    want, got = flavours(baseline_name), flavours(candidate_name)
+    if not want or not got:
+        return True
+    return bool(want & got)
+
+
 def is_same_variant(candidate, item) -> bool:
     """Whether a candidate is genuinely the same thing, not merely the nearest one.
 
@@ -161,13 +189,9 @@ def main() -> int:
                 "link_kind": "product",
             }]
 
-            # link_kind distinguishes a page *about* the product from a listing that
-            # merely contains it. Talabat has no per-product pages -- items open in an
-            # overlay and ?itemId= does not deep-link -- so its links are category pages
-            # and the UI says so rather than implying otherwise.
             for label, finder, key, needs_browser, link_kind in (
                 ("Spinneys", spinneys_search, "spinneys", True, "product"),
-                ("Talabat Mart", talabat_search, "talabat", False, "category"),
+                ("Talabat Mart", talabat_search, "talabat", False, "product"),
                 ("Mahmoud El Far", elfar_search, "elfar", True, "product"),
             ):
                 # Talabat is server-rendered, so it takes an HTTP session rather than a
@@ -188,6 +212,10 @@ def main() -> int:
                     if not candidate.url or not is_same_variant(candidate, item):
                         continue
                     if not size_matches_baseline(candidate, product["source"]["size"]):
+                        continue
+                    if not flavour_matches(candidate.name, product["source"]["product"]):
+                        print(f"     (flavour mismatch, skipping: {label} / {product['id']} "
+                              f"-> {candidate.name[:40]})", file=sys.stderr)
                         continue
                     if not price_is_plausible(candidate, product["baseline_egp"]):
                         print(f"     (implausible price, skipping: {label} / {product['id']} "

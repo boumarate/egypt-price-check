@@ -84,10 +84,11 @@ def scrape_category(
     items = state.get("itemsData", {}).get("items", []) or []
 
     products: list[TalabatProduct] = []
-    # Talabat has no per-product pages -- items open in an overlay on the category page,
-    # and the raw HTML carries category hrefs only. Guessing a /{slug} URL yields a 404.
-    # The category page is therefore the honest link: it is live, it is the page the price
-    # was actually read from, and the product is on it.
+    # Product pages exist at /product/{slug}/s/{sku}. This is not guessable from the
+    # category HTML, which carries category hrefs only -- it was found by clicking an item
+    # in a real browser and reading the URL it navigated to. Four invented patterns had
+    # been tried and rejected before that, which is a lesson about watching the app rather
+    # than guessing at its routes.
     for item in items:
         title = (item.get("title") or "").strip()
         price = item.get("price")
@@ -97,13 +98,22 @@ def scrape_category(
         pack = int(next(g for g in pack_match.groups() if g)) if pack_match else 1
         size = SIZE_RE.search(title)
         slug = item.get("slug", "")
+        sku = str(item.get("sku") or "").strip()
+        # Without both parts the product page cannot be addressed; fall back to the
+        # category page rather than emitting a URL that 404s.
+        product_url = (
+            f"{BASE}/egypt/grocery/{store.branch_id}/{store.branch_slug}"
+            f"/product/{slug}/s/{sku}?aid={store.area_id}"
+            if slug and sku
+            else url
+        )
         products.append(
             TalabatProduct(
                 name=title,
                 price_egp=float(price),
                 size=size.group(0).lower() if size else "",
                 pack_count=max(1, pack),
-                url=url,
+                url=product_url,
                 slug=slug,
             )
         )
