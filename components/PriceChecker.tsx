@@ -179,11 +179,9 @@ export default function PriceChecker({ products, zones }: Props) {
           punctuation stops being reordered -- inline it rendered as "them سعر)" with the
           brackets on the wrong sides. */}
       <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-        Tip: many Egyptian packs have the price printed on them{" "}
-        <bdi lang="ar" dir="rtl">
-          سعر الجمهور
-        </bdi>{" "}
-        — worth a look before you pay.
+        Tip: many Egyptian packs have the price printed on them — usually just a number in
+        Arabic digits (<bdi lang="ar">١٠</bdi> = 10, <bdi lang="ar">٥</bdi> = 5). Worth a
+        look before you pay.
       </p>
 
       {/* Hidden while searching: the results are already narrowed, and leaving the chips

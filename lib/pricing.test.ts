@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   counterOffer,
+  toArabicDigits,
   judgePrice,
   overchargeFactor,
   priceBands,
@@ -99,6 +100,14 @@ describe("price-marked packs (سعر الجمهور)", () => {
 
   it("keeps kiosk markup for unmarked products", () => {
     expect(judgePrice(12, CHIPS, cairo)).toBe("fair");
+  });
+});
+
+describe("toArabicDigits", () => {
+  it("renders the digits a tourist must find on the pack", () => {
+    expect(toArabicDigits(10)).toBe("١٠");
+    expect(toArabicDigits(7)).toBe("٧");
+    expect(toArabicDigits(12.5)).toBe("١٢.٥");
   });
 });
 

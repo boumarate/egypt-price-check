@@ -9,6 +9,7 @@ import {
   overchargeFactor,
   priceBands,
   printedPrice,
+  toArabicDigits,
   type Verdict,
   type Zone,
 } from "@/lib/pricing";
@@ -117,9 +118,14 @@ export default function ProductCard({
               </span>
             )}
           </p>
+          {/* The pack prints just the number, in Arabic-Indic digits, with no label. A
+              tourist cannot read ١٠ -- so show the exact glyphs to look for. */}
           <p className="mt-0.5 text-xs font-medium text-amber-700 dark:text-amber-400">
-            <bdi lang="ar">سعر الجمهور</bdi> is printed on the pack — this price applies
-            everywhere in Egypt, and paying more is overcharging.
+            Printed on the pack as{" "}
+            <bdi lang="ar" className="text-sm font-bold">
+              {toArabicDigits(printedPrice(product.baseline_egp))}
+            </bdi>{" "}
+            — that is the official price everywhere in Egypt.
           </p>
         </>
       ) : (
@@ -173,9 +179,12 @@ export default function ProductCard({
             </p>
             {verdict !== "fair" && marked && (
               <p className="mt-1 text-sm">
-                The pack has <strong>{printedPrice(product.baseline_egp)} EGP</strong>{" "}
-                printed on it — point at the{" "}
-                <bdi lang="ar">سعر الجمهور</bdi> and pay that, or buy elsewhere.
+                The pack itself is printed{" "}
+                <bdi lang="ar" className="font-bold">
+                  {toArabicDigits(printedPrice(product.baseline_egp))}
+                </bdi>{" "}
+                ({printedPrice(product.baseline_egp)} EGP). Find that number on the
+                packaging, point at it, and pay that — or buy elsewhere.
               </p>
             )}
             {verdict !== "fair" && !marked && (

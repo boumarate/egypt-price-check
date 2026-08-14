@@ -49,6 +49,18 @@ export function printedPrice(baselineEgp: number): number {
 }
 
 /**
+ * A number as it appears printed on Egyptian packaging: Arabic-Indic digits.
+ *
+ * The printed price is not labelled -- there is no "سعر الجمهور" text on the pack, just
+ * the number, and usually as ١٠ rather than 10. A tourist cannot read that, so the app
+ * shows the exact glyphs to look for.
+ */
+export function toArabicDigits(n: number): string {
+  const digits = "٠١٢٣٤٥٦٧٨٩";
+  return String(n).replace(/\d/g, (d) => digits[Number(d)]);
+}
+
+/**
  * Compute the fair / high / overcharged boundaries for a product in a zone.
  *
  * @param baselineEgp Normal Cairo supermarket price, in EGP.
