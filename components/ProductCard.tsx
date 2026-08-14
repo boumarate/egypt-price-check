@@ -92,29 +92,23 @@ export default function ProductCard({
         </div>
       </header>
 
-      {/* Price bands: the headline answer, readable without any input. */}
-      {/* The EGP figure sits beside the converted one so a tourist knows what to actually
-          hand over. When EGP *is* the chosen currency it would just repeat itself. */}
-      <dl className="space-y-1.5">
-        <Band
-          tone="fair"
-          term="Fair"
-          value={`${money(bands.fairLow)} – ${money(bands.fairHigh)}`}
-          egp={showEgp ? `${Math.round(bands.fairLow)}–${Math.round(bands.fairHigh)} EGP` : ""}
-        />
-        <Band
-          tone="high"
-          term="Pricey"
-          value={`up to ${money(bands.highMax)}`}
-          egp={showEgp ? `up to ${Math.round(bands.highMax)} EGP` : ""}
-        />
-        <Band
-          tone="over"
-          term="Walk away"
-          value={`over ${money(bands.highMax)}`}
-          egp={showEgp ? `over ${Math.round(bands.highMax)} EGP` : ""}
-        />
-      </dl>
+      {/* The answer, then the picture. The headline gives the fair range in the chosen
+          currency with EGP beside it (what is physically handed over); the scale shows the
+          same three bands spatially, which reads faster than three near-identical rows and
+          gives the typed price somewhere to land. */}
+      <p className="flex flex-wrap items-baseline gap-x-2">
+        <span className="text-sm font-medium text-slate-500 dark:text-slate-400">Fair</span>
+        <span className="text-2xl font-black tabular-nums tracking-tight text-emerald-700 dark:text-emerald-400">
+          {money(bands.fairLow)} – {money(bands.fairHigh)}
+        </span>
+        {showEgp && (
+          <span className="text-sm font-medium tabular-nums text-slate-500 dark:text-slate-400">
+            {Math.round(bands.fairLow)}–{Math.round(bands.fairHigh)} EGP
+          </span>
+        )}
+      </p>
+
+      <PriceScale bands={bands} asked={hasAsked ? askedNumber : null} verdict={verdict} />
 
       {/* Optional price check. Purely local arithmetic -- nothing is sent anywhere. */}
       <div className="mt-4 border-t border-slate-200 pt-3 dark:border-slate-700">
@@ -214,39 +208,65 @@ export default function ProductCard({
   );
 }
 
-function Band({
-  tone,
-  term,
-  value,
-  egp,
+/**
+ * The three price bands drawn as one horizontal scale, with the asked price as a marker.
+ *
+ * Three stacked rows reading "6-7", "up to 10", "over 10" make the reader do the spatial
+ * work in their head. A scale does it visually: green is where a fair price lives, red is
+ * where to walk away, and when a price is typed a marker drops onto the bar showing
+ * exactly where the quote sits. The domain runs a little past highMax so an overcharged
+ * marker has somewhere to land instead of pinning to the edge.
+ */
+function PriceScale({
+  bands,
+  asked,
+  verdict,
 }: {
-  tone: "fair" | "high" | "over";
-  term: string;
-  value: string;
-  egp: string;
+  bands: { fairLow: number; fairHigh: number; highMax: number };
+  asked: number | null;
+  verdict: Verdict | null;
 }) {
-  const dot =
-    tone === "fair" ? "bg-emerald-500" : tone === "high" ? "bg-amber-500" : "bg-rose-500";
-  // "Fair" is the answer someone came for; the other two are context for judging a quote,
-  // so they sit a step quieter rather than competing with it.
-  const emphasis =
-    tone === "fair"
-      ? "text-lg font-bold text-slate-900 dark:text-slate-50"
-      : "text-base font-semibold text-slate-600 dark:text-slate-300";
+  const min = bands.fairLow * 0.85;
+  const max = bands.highMax * 1.45;
+  const pct = (v: number) =>
+    Math.min(100, Math.max(0, ((v - min) / (max - min)) * 100));
+
+  const fairEnd = pct(bands.fairHigh);
+  const highEnd = pct(bands.highMax);
+  const marker = asked !== null ? pct(asked) : null;
+  const markerTone =
+    verdict === "fair"
+      ? "border-emerald-600 dark:border-emerald-400"
+      : verdict === "high"
+        ? "border-amber-500"
+        : "border-rose-600 dark:border-rose-400";
+
   return (
-    <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
-      <dt className="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-400">
-        <span className={`h-2.5 w-2.5 rounded-full ${dot}`} aria-hidden="true" />
-        {term}
-      </dt>
-      <dd className="ml-auto text-right">
-        <span className={`tabular-nums ${emphasis}`}>{value}</span>
-        {egp && (
-          <span className="ml-2 text-sm tabular-nums text-slate-500 dark:text-slate-400">
-            {egp}
-          </span>
+    <div className="mt-2" aria-hidden="true">
+      <div className="relative h-2.5 overflow-hidden rounded-full">
+        <div className="absolute inset-y-0 left-0 bg-emerald-400/90 dark:bg-emerald-500/80"
+             style={{ width: `${fairEnd}%` }} />
+        <div className="absolute inset-y-0 bg-amber-400/90 dark:bg-amber-500/80"
+             style={{ left: `${fairEnd}%`, width: `${highEnd - fairEnd}%` }} />
+        <div className="absolute inset-y-0 right-0 bg-rose-400/90 dark:bg-rose-500/80"
+             style={{ left: `${highEnd}%` }} />
+        {marker !== null && (
+          <div
+            className={`absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] bg-white shadow transition-all duration-300 dark:bg-slate-900 ${markerTone}`}
+            style={{ left: `${marker}%` }}
+          />
         )}
-      </dd>
+      </div>
+      <div className="relative mt-1 h-4 text-[11px] font-medium tabular-nums text-slate-500 dark:text-slate-400">
+        <span className="absolute -translate-x-1/2" style={{ left: `${pct(bands.fairLow)}%` }}>
+          {Math.round(bands.fairLow)}
+        </span>
+        <span className="absolute -translate-x-1/2" style={{ left: `${highEnd}%` }}>
+          {Math.round(bands.highMax)}
+        </span>
+        <span className="absolute right-0">EGP</span>
+      </div>
     </div>
   );
 }
+

@@ -80,11 +80,14 @@ export default function PriceChecker({ products, zones }: Props) {
   return (
     <div className="mx-auto max-w-2xl px-4 pb-16">
       <header className="pt-5 pb-3">
-        <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-slate-50">
-          What should this cost?
+        <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-slate-50">
+          What should this{" "}
+          <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
+            cost?
+          </span>
         </h1>
         <p className="text-sm text-slate-600 dark:text-slate-400">
-          Fair prices for Egypt, adjusted for where you are.
+          Fair prices for Egypt, checked against real supermarkets weekly.
         </p>
       </header>
 
