@@ -59,7 +59,7 @@ export default function ProductCard({
   const showEgp = currency !== "EGP";
 
   return (
-    <article className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+    <article className="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-slate-900/5 transition-shadow hover:shadow-md dark:bg-slate-900 dark:ring-white/10">
       {/* The photo is the fastest way to confirm this is the item in your hand -- brands
           and packaging differ, and so do their fair prices. */}
       <header className="mb-3 flex items-start gap-3">

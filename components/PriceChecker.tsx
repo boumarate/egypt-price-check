@@ -78,86 +78,100 @@ export default function PriceChecker({ products, zones }: Props) {
     category && !query.trim() ? searched.filter((p) => p.category === category) : searched;
 
   return (
-    <div className="mx-auto max-w-2xl px-4 pb-16">
-      <header className="pt-5 pb-3">
-        <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-slate-50">
-          What should this{" "}
-          <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
-            cost?
-          </span>
-        </h1>
-        <p className="text-sm text-slate-600 dark:text-slate-400">
-          Fair prices for Egypt, checked against real supermarkets weekly.
-        </p>
-      </header>
-
-      {/*
-        Controls are deliberately compact. Rendering the zones as wrapped pills pushed the
-        first price 535px down a 667px phone -- four fifths of the screen was chrome before
-        any content appeared. Two side-by-side selects do the same job in one row, and the
-        search box comes first because searching is what people came to do.
-      */}
-      <div className="sticky top-0 z-10 -mx-4 space-y-2 bg-slate-50/95 px-4 pb-3 pt-2 backdrop-blur dark:bg-slate-950/95">
-        <label htmlFor="search" className="sr-only">
-          Search for a product
-        </label>
-        <input
-          id="search"
-          type="search"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search: water, coke, chips…"
-          className="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3.5 text-base
-                     focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200
-                     dark:border-slate-600 dark:bg-slate-800 dark:text-slate-50"
+    <div>
+      {/* Dark masthead continuing the nav's band, with soft amber glows for warmth. The
+          search card overlaps its bottom edge -- the one pattern that most reads
+          "designed product" rather than "form on a page". */}
+      <section className="relative overflow-hidden bg-slate-950 pb-16 pt-8">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-16 right-[-10%] h-56 w-56 rounded-full bg-amber-500/25 blur-3xl"
         />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-24 left-[-15%] h-64 w-64 rounded-full bg-orange-600/20 blur-3xl"
+        />
+        <header className="relative mx-auto max-w-2xl px-4">
+          <h1 className="text-3xl font-black tracking-tight text-white">
+            What should this{" "}
+            <span className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+              cost?
+            </span>
+          </h1>
+          <p className="mt-1 text-sm text-slate-400">
+            Fair prices for Egypt, checked against real supermarkets weekly.
+          </p>
+        </header>
+      </section>
 
-        <div className="flex flex-wrap gap-2">
-          <div className="min-w-[9rem] flex-1">
-            <label htmlFor="zone" className="sr-only">
-              Where are you?
-            </label>
-            <select
-              id="zone"
-              value={zoneId}
-              onChange={(event) => setZoneId(event.target.value)}
-              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-base
-                         focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200
-                         dark:border-slate-600 dark:bg-slate-800 dark:text-slate-50"
-            >
-              {zones.map((z) => (
-                <option key={z.id} value={z.id}>
-                  📍 {z.label}
-                </option>
-              ))}
-            </select>
-          </div>
+      <div className="mx-auto max-w-2xl px-4 pb-16">
+        {/*
+          Controls are deliberately compact. Rendering the zones as wrapped pills pushed
+          the first price 535px down a 667px phone -- four fifths of the screen was chrome
+          before any content appeared. The cluster floats over the hero's bottom edge and
+          stays sticky so the search never scrolls out of reach.
+        */}
+        <div className="sticky top-2 z-10 -mt-10 space-y-2 rounded-2xl bg-white p-3 shadow-xl shadow-slate-900/10 ring-1 ring-slate-900/5 dark:bg-slate-900 dark:ring-white/10">
+          <label htmlFor="search" className="sr-only">
+            Search for a product
+          </label>
+          <input
+            id="search"
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search: water, coke, chips…"
+            className="w-full rounded-xl border-0 bg-slate-100 px-4 py-3.5 text-base text-slate-900
+                       placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-400
+                       dark:bg-slate-800 dark:text-slate-50"
+          />
 
-          <div className="min-w-[9rem] flex-1">
-            <label htmlFor="currency" className="sr-only">
-              Show prices in
-            </label>
-            <select
-              id="currency"
-              value={currency}
-              onChange={(event) => setCurrency(event.target.value)}
-              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-base
-                         focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200
-                         dark:border-slate-600 dark:bg-slate-800 dark:text-slate-50"
-            >
-              {CURRENCY_GROUPS.map((group) => (
-                <optgroup key={group} label={group}>
-                  {CURRENCIES.filter((c) => c.group === group).map((c) => (
-                    <option key={c.code} value={c.code}>
-                      {c.code} — {c.label}
-                    </option>
-                  ))}
-                </optgroup>
-              ))}
-            </select>
+          <div className="flex flex-wrap gap-2">
+            <div className="min-w-[9rem] flex-1">
+              <label htmlFor="zone" className="sr-only">
+                Where are you?
+              </label>
+              <select
+                id="zone"
+                value={zoneId}
+                onChange={(event) => setZoneId(event.target.value)}
+                className="w-full rounded-xl border-0 bg-slate-100 px-3 py-2.5 text-base text-slate-900
+                           focus:outline-none focus:ring-2 focus:ring-amber-400
+                           dark:bg-slate-800 dark:text-slate-50"
+              >
+                {zones.map((z) => (
+                  <option key={z.id} value={z.id}>
+                    📍 {z.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="min-w-[9rem] flex-1">
+              <label htmlFor="currency" className="sr-only">
+                Show prices in
+              </label>
+              <select
+                id="currency"
+                value={currency}
+                onChange={(event) => setCurrency(event.target.value)}
+                className="w-full rounded-xl border-0 bg-slate-100 px-3 py-2.5 text-base text-slate-900
+                           focus:outline-none focus:ring-2 focus:ring-amber-400
+                           dark:bg-slate-800 dark:text-slate-50"
+              >
+                {CURRENCY_GROUPS.map((group) => (
+                  <optgroup key={group} label={group}>
+                    {CURRENCIES.filter((c) => c.group === group).map((c) => (
+                      <option key={c.code} value={c.code}>
+                        {c.code} — {c.label}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
-      </div>
 
       <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{zone.note}</p>
 
@@ -215,7 +229,8 @@ export default function PriceChecker({ products, zones }: Props) {
         )}
       </div>
 
-      <EmergencyNumbers />
+        <EmergencyNumbers />
+      </div>
     </div>
   );
 }
@@ -234,10 +249,10 @@ function CategoryChip({
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`rounded-full px-3.5 py-2 text-sm font-medium capitalize transition ${
+      className={`rounded-full px-3.5 py-2 text-sm font-semibold capitalize transition ${
         active
-          ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
-          : "bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+          ? "bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 shadow-sm"
+          : "bg-white text-slate-600 ring-1 ring-slate-200 hover:ring-slate-300 dark:bg-slate-900 dark:text-slate-300 dark:ring-slate-700"
       }`}
     >
       {label}

@@ -28,11 +28,18 @@ body {
   overflow-wrap: break-word;
 }
 
-/* Never let anything force the page wider than the screen, whatever the text size. */
+/*
+ * Never let anything force the page wider than the screen, whatever the text size.
+ *
+ * `clip`, not `hidden`: overflow-x hidden turns body into a scroll container, and every
+ * position:sticky descendant then sticks to that instead of the viewport -- which
+ * silently disabled the floating search card. clip does the same visual clamping without
+ * creating a scroll container, so sticky keeps working.
+ */
 html,
 body {
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 @theme inline {
