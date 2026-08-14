@@ -9,7 +9,7 @@
  * freshness via localStorage, and a stale rate cached at the SW layer would be invisible.
  */
 
-const CACHE = "egypt-prices-v5";
+const CACHE = "egypt-prices-v6";
 
 /**
  * Pre-cache the shell, every page route and every product photo.
@@ -75,6 +75,14 @@ async function matchCached(request) {
   return undefined;
 }
 
+/**
+ * How long a navigation waits for the network before falling back to cache.
+ *
+ * Long enough for ordinary mobile data to answer, short enough that a dead zone at the
+ * pyramids still renders the cached page without a perceptible hang.
+ */
+const NAV_TIMEOUT_MS = 3500;
+
 self.addEventListener("fetch", (event) => {
   const { request } = event;
   if (request.method !== "GET") return;
@@ -82,9 +90,42 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return; // let rate lookups hit the network
 
+  // Pages go network-first. Cache-first HTML meant every deploy was one visit behind:
+  // the first load served the previous build and only refreshed the cache in the
+  // background, so updates appeared on the SECOND visit -- which reads as "the site
+  // didn't update". Assets are content-hashed so staleness cannot bite them the same way.
+  if (request.mode === "navigate") {
+    event.respondWith(
+      (async () => {
+        const cachedPromise = matchCached(request);
+        const network = fetch(request)
+          .then((response) => {
+            if (response.ok) {
+              const copy = response.clone();
+              caches.open(CACHE).then((cache) => cache.put(request, copy));
+            }
+            return response;
+          })
+          .catch(() => null);
+
+        const timer = new Promise((resolve) =>
+          setTimeout(() => resolve(null), NAV_TIMEOUT_MS),
+        );
+        const fresh = await Promise.race([network, timer]);
+        if (fresh) return fresh;
+
+        // Slow or offline: serve cache now; the fetch above still updates the cache for
+        // the next visit if it eventually completes.
+        const cached = await cachedPromise;
+        return cached ?? (await network) ?? caches.match("/");
+      })(),
+    );
+    return;
+  }
+
+  // Everything else (hashed JS/CSS, photos, data) stays cache-first for speed.
   event.respondWith(
     matchCached(request).then((cached) => {
-      // Serve cache first for instant loads on bad 4G, then refresh in the background.
       const network = fetch(request)
         .then((response) => {
           if (response.ok) {
