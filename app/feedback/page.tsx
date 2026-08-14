@@ -35,28 +35,28 @@ const TOPICS = [
       "Where (shop and area):",
       "",
     ].join("\n"),
-    tone: "border-amber-300 bg-amber-50 dark:border-amber-700 dark:bg-amber-950",
+    tone: "ring-amber-300 bg-amber-50 dark:ring-amber-700 dark:bg-amber-950",
   },
   {
     title: "Add a product",
     blurb: "Something tourists buy that isn't listed yet.",
     subject: "Product suggestion for Egypt Price Check",
     body: ["Product and brand:", "Size:", "Where you usually see it:", ""].join("\n"),
-    tone: "border-sky-300 bg-sky-50 dark:border-sky-700 dark:bg-sky-950",
+    tone: "ring-sky-300 bg-sky-50 dark:ring-sky-700 dark:bg-sky-950",
   },
   {
     title: "Something is broken",
     blurb: "A page that won't load, a link that goes nowhere, a photo that's wrong.",
     subject: "Bug report — Egypt Price Check",
     body: ["What happened:", "Page or product:", "Phone and browser:", ""].join("\n"),
-    tone: "border-rose-300 bg-rose-50 dark:border-rose-700 dark:bg-rose-950",
+    tone: "ring-rose-300 bg-rose-50 dark:ring-rose-700 dark:bg-rose-950",
   },
   {
     title: "Suggestion or complaint",
     blurb: "Anything else — how it works, what's missing, what's annoying.",
     subject: "Feedback on Egypt Price Check",
     body: "",
-    tone: "border-slate-300 bg-slate-50 dark:border-slate-600 dark:bg-slate-800",
+    tone: "ring-slate-300 bg-white dark:ring-slate-600 dark:bg-slate-800",
   },
 ];
 
@@ -68,21 +68,33 @@ function mailto(subject: string, body: string) {
 export default function FeedbackPage() {
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950">
-      <div className="mx-auto max-w-2xl px-4 pb-16 pt-6">
-        <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-slate-50">
-          Tell me what&rsquo;s wrong
-        </h1>
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-          This site is one person checking supermarket prices. If something is out of date,
-          missing, or plainly wrong, saying so is the fastest way it gets fixed.
-        </p>
+      {/* Same masthead treatment as the rest of the site. */}
+      <section className="relative overflow-hidden bg-slate-950 pb-14 pt-8">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-16 right-[-10%] h-56 w-56 rounded-full bg-amber-500/25 blur-3xl"
+        />
+        <div className="relative mx-auto max-w-2xl px-4">
+          <h1 className="text-3xl font-black tracking-tight text-white">
+            Tell me what&rsquo;s{" "}
+            <span className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
+              wrong
+            </span>
+          </h1>
+          <p className="mt-1 text-sm text-slate-400">
+            This site is one person checking supermarket prices. If something is out of
+            date, missing, or plainly wrong, saying so is the fastest way it gets fixed.
+          </p>
+        </div>
+      </section>
 
-        <div className="mt-6 space-y-3">
+      <div className="mx-auto max-w-2xl px-4 pb-16">
+        <div className="-mt-6 space-y-3">
           {TOPICS.map((topic) => (
             <a
               key={topic.title}
               href={mailto(topic.subject, topic.body)}
-              className={`block rounded-2xl border-2 p-4 transition hover:shadow-md ${topic.tone}`}
+              className={`block rounded-2xl p-4 shadow-sm ring-1 transition hover:shadow-md ${topic.tone}`}
             >
               <h2 className="font-bold text-slate-900 dark:text-slate-50">
                 {topic.title} <span aria-hidden="true">→</span>
@@ -92,7 +104,7 @@ export default function FeedbackPage() {
           ))}
         </div>
 
-        <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900">
+        <section className="mt-8 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-900/5 dark:bg-slate-900 dark:ring-white/10">
           <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-50">
             Or just email directly
           </h2>

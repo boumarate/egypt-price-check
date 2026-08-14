@@ -10,7 +10,7 @@ import emergency from "@/data/emergency.json";
  */
 export default function EmergencyNumbers() {
   return (
-    <details className="mt-8 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900">
+    <details className="mt-8 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-900/5 dark:bg-slate-900 dark:ring-white/10">
       <summary className="cursor-pointer text-sm font-semibold text-slate-900 dark:text-slate-50">
         Useful numbers in Egypt
       </summary>

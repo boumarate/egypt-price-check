@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProductPage from "@/components/ProductPage";
 import { ProductJsonLd } from "@/components/StructuredData";
@@ -71,18 +70,10 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950">
-      <div className="mx-auto max-w-2xl px-4 pb-16 pt-6">
-        <nav className="mb-4 text-sm">
-          <Link
-            href="/"
-            className="text-sky-700 underline underline-offset-2 dark:text-sky-400"
-          >
-            ← All prices
-          </Link>
-        </nav>
-        <ProductJsonLd product={product} zone={zones[0]} />
-        <ProductPage product={product} zones={zones} />
-      </div>
+      <ProductJsonLd product={product} zone={zones[0]} />
+      {/* ProductPage owns the full-bleed masthead, so the width constraint lives inside
+          it rather than here -- same structure as the home page. */}
+      <ProductPage product={product} zones={zones} />
     </main>
   );
 }
