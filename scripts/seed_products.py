@@ -123,6 +123,11 @@ CATALOGUE = [
     Item("schweppes", "Schweppes 250ml", "شويبس", "drinks", "schweppes",
          r"schweppes", (240, 260), 60,
          ["schweppes", "soda", "tonic", "soft drink", "pomegranate"]),
+    # V Cola: the cheap Egyptian cola, a kiosk staple precisely because it undercuts
+    # Coke/Pepsi. "Super Soda" is its own branding, not a variant to exclude.
+    Item("v-cola", "V Cola 300ml", "في كولا", "drinks", "v cola",
+         r"\bv ?cola\b", (280, 320), 40, ["v cola", "vcola", "cola", "local cola"],
+         exclude=r"diet"),
     # Sprite has no entry: Carrefour now stocks only a 2.45L PET bottle, which is not a
     # kiosk purchase. The 320ml can it sold earlier was delisted, as Aquafina 600ml was.
     # Re-add if the can returns.
@@ -363,12 +368,28 @@ def main() -> int:
     session = new_session()
     today = date.today().strftime("%Y-%m")
     entries = []
+    # A failed search or stock check must not silently drop a product that was fine
+    # yesterday: Carrefour throttles under a full run, and a throttled page with no
+    # "Add to cart" is indistinguishable from a delisted product. Keeping the previous
+    # entry (with a warning) turns that failure mode into staleness instead of loss --
+    # six products vanished this way in one run, Coke and Pepsi among them.
+    previous = {}
+    if OUT.exists():
+        try:
+            previous = {e["id"]: e for e in json.loads(OUT.read_text(encoding="utf-8"))}
+        except Exception:  # noqa: BLE001 - a corrupt file just means no fallback
+            previous = {}
 
     for item in CATALOGUE:
         try:
             results = search(item.keyword, session)
         except Exception as exc:  # noqa: BLE001 - one bad query must not kill the run
-            print(f"  !! {item.id}: search failed ({exc})", file=sys.stderr)
+            if item.id in previous:
+                print(f"  !! {item.id}: search failed ({str(exc)[:50]}) -- keeping previous",
+                      file=sys.stderr)
+                entries.append(previous[item.id])
+            else:
+                print(f"  !! {item.id}: search failed ({exc})", file=sys.stderr)
             continue
 
         chosen = pick(results, item)
@@ -381,10 +402,13 @@ def main() -> int:
             chosen = pick([p for p in results if p.product_id not in rejected], item)
 
         if not chosen:
-            print(
-                f"  !! {item.id}: no in-stock match among {len(results)} results",
-                file=sys.stderr,
-            )
+            if item.id in previous:
+                print(f"  !! {item.id}: no in-stock match -- keeping previous entry",
+                      file=sys.stderr)
+                entries.append(previous[item.id])
+            else:
+                print(f"  !! {item.id}: no in-stock match among {len(results)} results",
+                      file=sys.stderr)
             continue
 
         entries.append({
