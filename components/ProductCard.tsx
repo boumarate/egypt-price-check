@@ -8,6 +8,7 @@ import {
   judgePrice,
   overchargeFactor,
   priceBands,
+  printedPrice,
   type Verdict,
   type Zone,
 } from "@/lib/pricing";
@@ -50,10 +51,13 @@ export default function ProductCard({
 }: Props) {
   const [asked, setAsked] = useState("");
 
-  const bands = priceBands(product.baseline_egp, zone);
+  const marked = product.price_marked === true;
+  const bands = priceBands(product.baseline_egp, zone, marked);
   const askedNumber = Number.parseFloat(asked);
   const hasAsked = Number.isFinite(askedNumber) && askedNumber > 0;
-  const verdict = hasAsked ? judgePrice(askedNumber, product.baseline_egp, zone) : null;
+  const verdict = hasAsked
+    ? judgePrice(askedNumber, product.baseline_egp, zone, marked)
+    : null;
 
   const money = (egp: number) => formatMoney(convert(egp, currency, rates), currency);
   const showEgp = currency !== "EGP";
@@ -96,17 +100,41 @@ export default function ProductCard({
           currency with EGP beside it (what is physically handed over); the scale shows the
           same three bands spatially, which reads faster than three near-identical rows and
           gives the typed price somewhere to land. */}
-      <p className="flex flex-wrap items-baseline gap-x-2">
-        <span className="text-sm font-medium text-slate-500 dark:text-slate-400">Fair</span>
-        <span className="text-2xl font-black tabular-nums tracking-tight text-emerald-700 dark:text-emerald-400">
-          {money(bands.fairLow)} – {money(bands.fairHigh)}
-        </span>
-        {showEgp && (
-          <span className="text-sm font-medium tabular-nums text-slate-500 dark:text-slate-400">
-            {Math.round(bands.fairLow)}–{Math.round(bands.fairHigh)} EGP
+      {marked ? (
+        // The pack itself states the price, which beats any range we could compute. Lead
+        // with the printed number and say where it comes from.
+        <>
+          <p className="flex flex-wrap items-baseline gap-x-2">
+            <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
+              Printed price
+            </span>
+            <span className="text-2xl font-black tabular-nums tracking-tight text-emerald-700 dark:text-emerald-400">
+              {printedPrice(product.baseline_egp)} EGP
+            </span>
+            {showEgp && (
+              <span className="text-sm font-medium tabular-nums text-slate-500 dark:text-slate-400">
+                ≈ {money(printedPrice(product.baseline_egp))}
+              </span>
+            )}
+          </p>
+          <p className="mt-0.5 text-xs font-medium text-amber-700 dark:text-amber-400">
+            <bdi lang="ar">سعر الجمهور</bdi> is printed on the pack — this price applies
+            everywhere in Egypt, and paying more is overcharging.
+          </p>
+        </>
+      ) : (
+        <p className="flex flex-wrap items-baseline gap-x-2">
+          <span className="text-sm font-medium text-slate-500 dark:text-slate-400">Fair</span>
+          <span className="text-2xl font-black tabular-nums tracking-tight text-emerald-700 dark:text-emerald-400">
+            {money(bands.fairLow)} – {money(bands.fairHigh)}
           </span>
-        )}
-      </p>
+          {showEgp && (
+            <span className="text-sm font-medium tabular-nums text-slate-500 dark:text-slate-400">
+              {Math.round(bands.fairLow)}–{Math.round(bands.fairHigh)} EGP
+            </span>
+          )}
+        </p>
+      )}
 
       <PriceScale bands={bands} asked={hasAsked ? askedNumber : null} verdict={verdict} />
 
@@ -143,7 +171,14 @@ export default function ProductCard({
               <span aria-hidden="true">{VERDICT_STYLES[verdict].icon}</span>
               {VERDICT_STYLES[verdict].label}
             </p>
-            {verdict !== "fair" && (
+            {verdict !== "fair" && marked && (
+              <p className="mt-1 text-sm">
+                The pack has <strong>{printedPrice(product.baseline_egp)} EGP</strong>{" "}
+                printed on it — point at the{" "}
+                <bdi lang="ar">سعر الجمهور</bdi> and pay that, or buy elsewhere.
+              </p>
+            )}
+            {verdict !== "fair" && !marked && (
               <p className="mt-1 text-sm">
                 That&rsquo;s {overchargeFactor(askedNumber, product.baseline_egp, zone)}× the
                 normal {zone.label} price. Offer{" "}

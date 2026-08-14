@@ -525,7 +525,8 @@
         "price_egp": 14.95,
         "link_kind": "product"
       }
-    ]
+    ],
+    "price_marked": true
   },
   {
     "id": "fanta-glass",
@@ -599,7 +600,8 @@
         "price_egp": 10.0,
         "link_kind": "product"
       }
-    ]
+    ],
+    "price_marked": true
   },
   {
     "id": "doritos",
@@ -629,7 +631,8 @@
         "price_egp": 9.5,
         "link_kind": "product"
       }
-    ]
+    ],
+    "price_marked": true
   },
   {
     "id": "galaxy-bar",
@@ -994,7 +997,8 @@
         "price_egp": 15.0,
         "link_kind": "product"
       }
-    ]
+    ],
+    "price_marked": true
   },
   {
     "id": "molto-croissant",
@@ -1024,7 +1028,8 @@
         "price_egp": 9.99,
         "link_kind": "product"
       }
-    ]
+    ],
+    "price_marked": true
   },
   {
     "id": "hohos",
@@ -1068,7 +1073,8 @@
         "price_egp": 10.0,
         "link_kind": "product"
       }
-    ]
+    ],
+    "price_marked": true
   },
   {
     "id": "twinkies",
@@ -1112,7 +1118,8 @@
         "price_egp": 10.0,
         "link_kind": "product"
       }
-    ]
+    ],
+    "price_marked": true
   },
   {
     "id": "wafer",
@@ -1230,7 +1237,8 @@
         "price_egp": 21.0,
         "link_kind": "product"
       }
-    ]
+    ],
+    "price_marked": true
   },
   {
     "id": "juhayna-milk-1l",

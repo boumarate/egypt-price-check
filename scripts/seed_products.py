@@ -52,6 +52,9 @@ class Item:
     # Brand-level exclusion for line extensions that share the brand name but are a
     # different product -- "Galaxy Flutes" wafer rolls are not a Galaxy chocolate bar.
     exclude: str = ""
+    # True when the pack carries the official printed price (سعر الجمهور). Set only where
+    # this is certain: a wrong flag makes the app call a fair price a scam.
+    price_marked: bool = False
     # Photo handling. "" picks automatically; "-" means Carrefour has no usable packshot
     # for this product, so show nothing rather than a misleading image. No heuristic can
     # tell a mineral-composition table from a bottle reliably, so the few bad cases are
@@ -127,7 +130,7 @@ CATALOGUE = [
     # Coke/Pepsi. "Super Soda" is its own branding, not a variant to exclude.
     Item("v-cola", "V Cola 300ml", "في كولا", "drinks", "v cola",
          r"\bv ?cola\b", (280, 320), 40, ["v cola", "vcola", "cola", "local cola"],
-         exclude=r"diet"),
+         exclude=r"diet", price_marked=True),
     # Sprite has no entry: Carrefour now stocks only a 2.45L PET bottle, which is not a
     # kiosk purchase. The 320ml can it sold earlier was delisted, as Aquafina 600ml was.
     # Re-add if the can returns.
@@ -138,9 +141,9 @@ CATALOGUE = [
 
     # --- Snacks ---
     Item("chipsy", "Chipsy crisps", "شيبسي", "snacks", "chipsy potato chips",
-         r"chipsy", (20, 80), 60, ["chipsy", "chips", "crisps", "lays"]),
+         r"chipsy", (20, 80), 60, ["chipsy", "chips", "crisps", "lays"], price_marked=True),
     Item("doritos", "Doritos", "دوريتوس", "snacks", "doritos",
-         r"doritos", (20, 90), 60, ["doritos", "tortilla", "chips", "crisps"]),
+         r"doritos", (20, 90), 60, ["doritos", "tortilla", "chips", "crisps"], price_marked=True),
 
     # --- Chocolate. Size window excludes the 22g "wafer roll" variants, which are a
     # different product from the chocolate bar a tourist means. ---
@@ -171,14 +174,14 @@ CATALOGUE = [
     Item("oreo", "Oreo", "أوريو", "snacks", "oreo biscuit",
          r"oreo", None, 40, ["oreo", "biscuit", "cookies"]),
     Item("todo-brownies", "Todo brownies", "تودو براونيز", "snacks", "todo brownies",
-         r"todo", None, 60, ["todo", "brownies", "brownie", "cake", "chocolate cake"]),
+         r"todo", None, 60, ["todo", "brownies", "brownie", "cake", "chocolate cake"], price_marked=True),
     Item("molto-croissant", "Molto croissant", "مولتو كرواسون", "snacks",
          "molto croissant", r"molto", None, 60,
-         ["molto", "croissant", "chocolate croissant", "pastry"]),
+         ["molto", "croissant", "chocolate croissant", "pastry"], price_marked=True),
     Item("hohos", "Hohos cake roll", "هوهوز", "snacks", "hohos cake",
-         r"hohos", None, 60, ["hohos", "cake", "swiss roll", "chocolate roll"]),
+         r"hohos", None, 60, ["hohos", "cake", "swiss roll", "chocolate roll"], price_marked=True),
     Item("twinkies", "Twinkies cake", "تwinكيز", "snacks", "twinkies cake",
-         r"twinkies", None, 60, ["twinkies", "cake", "cream cake", "sponge"]),
+         r"twinkies", None, 60, ["twinkies", "cake", "cream cake", "sponge"], price_marked=True),
     Item("wafer", "Mandolin wafer", "ويفر ماندولين", "snacks", "mandolin wafer",
          r"mandolin", (20, 60), 40, ["wafer", "waffer", "biscuit", "mandolin"]),
     Item("pringles", "Pringles", "برينجلز", "snacks", "pringles",
@@ -187,7 +190,7 @@ CATALOGUE = [
     # --- Juice and milk, sold chilled at every kiosk ---
     Item("juhayna-juice", "Juhayna juice 235ml", "عصير جهينة", "drinks",
          "juhayna juice 235", r"juhayna", (220, 260), 60,
-         ["juice", "juhayna", "orange juice", "mango", "guava"]),
+         ["juice", "juhayna", "orange juice", "mango", "guava"], price_marked=True),
     Item("juhayna-milk-1l", "Juhayna milk 1L", "لبن جهينة ١ لتر", "drinks",
          "juhayna milk 1 liter", r"juhayna.*milk|milk.*juhayna", (900, 1100), 90,
          ["milk", "juhayna", "full cream", "laban"]),

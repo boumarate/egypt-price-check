@@ -143,7 +143,7 @@ export default function ProductPage({ product, zones }: Props) {
             </thead>
             <tbody>
               {zones.map((z) => {
-                const bands = priceBands(product.baseline_egp, z);
+                const bands = priceBands(product.baseline_egp, z, product.price_marked === true);
                 return (
                   <tr key={z.id} className="border-t border-slate-200 dark:border-slate-700">
                     <th scope="row" className="p-3 text-left font-medium">
@@ -162,8 +162,9 @@ export default function ProductPage({ product, zones }: Props) {
           </table>
         </div>
         <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-          Supermarket baseline from Carrefour Egypt, verified {product.updated}. Regional
-          markups are estimates.
+          {product.price_marked
+            ? "This pack has its official price printed on it, so the same price applies in every area."
+            : `Supermarket baseline from Carrefour Egypt, verified ${product.updated}. Regional markups are estimates.`}
         </p>
       </section>
 

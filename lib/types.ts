@@ -27,6 +27,12 @@ export interface Product {
   baseline_egp: number;
   /** Site-relative path to the packaging photo, or "" if none was found. */
   image: string;
+  /**
+   * True when the pack carries the official printed price (سعر الجمهور). For these the
+   * printed number is the price everywhere -- no kiosk markup, no zone multiplier, and
+   * anything above it is overcharging outright.
+   */
+  price_marked?: boolean;
   aliases: string[];
   source: ProductSource;
   /** Shop listings backing this price, so a user can check it rather than trust it. */
