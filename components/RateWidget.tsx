@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 
 /**
  * One-tap feedback: a thumb, then an optional note.
@@ -122,10 +121,7 @@ export default function RateWidget() {
 
       {state === "failed" && (
         <p className="text-sm text-slate-600 dark:text-slate-300">
-          Couldn&rsquo;t send — you may be offline.{" "}
-          <Link href="/feedback" className="underline underline-offset-2">
-            Email instead?
-          </Link>
+          Couldn&rsquo;t send — you may be offline. Try again when you have signal.
         </p>
       )}
     </section>
