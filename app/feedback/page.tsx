@@ -117,9 +117,10 @@ export default function FeedbackPage() {
             </a>
           </p>
           <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
-            These links open your own email app. The site has no contact form, no accounts
-            and no analytics — nothing you do here is recorded, and there is no server to
-            record it on.
+            These links open your own email app. The site has no accounts and no
+            analytics; the only thing it ever sends is the optional thumbs rating —
+            the thumb, your note if you write one, and which page you were on. Nothing
+            identifies you.
           </p>
         </section>
 

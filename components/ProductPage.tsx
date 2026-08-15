@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import ProductCard from "./ProductCard";
 import EmergencyNumbers from "./EmergencyNumbers";
+import RateWidget from "./RateWidget";
 import { usePersisted } from "@/lib/usePersisted";
 import {
   CURRENCIES,
@@ -168,6 +169,7 @@ export default function ProductPage({ product, zones }: Props) {
         </p>
       </section>
 
+      <RateWidget />
       <EmergencyNumbers />
       </div>
     </div>

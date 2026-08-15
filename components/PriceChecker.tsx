@@ -6,6 +6,7 @@ import Link from "next/link";
 import ProductCard from "./ProductCard";
 import ProductTile from "./ProductTile";
 import EmergencyNumbers from "./EmergencyNumbers";
+import RateWidget from "./RateWidget";
 import { usePersisted } from "@/lib/usePersisted";
 import {
   CURRENCIES,
@@ -257,7 +258,8 @@ export default function PriceChecker({ products, zones }: Props) {
         </div>
       )}
 
-        <EmergencyNumbers />
+        <RateWidget />
+      <EmergencyNumbers />
       </div>
     </div>
   );

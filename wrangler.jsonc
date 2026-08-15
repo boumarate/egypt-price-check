@@ -11,9 +11,19 @@
   "name": "egypt-price-check",
   "compatibility_date": "2026-07-01",
 
+  // The one dynamic endpoint on an otherwise static site: POST /api/feedback stores an
+  // anonymous thumbs rating (and optional note) in KV. Requests that match a built file
+  // are served as assets and never reach the worker, so the worker only ever sees /api/*
+  // and unknown paths, which it hands back to the asset layer for the 404 page.
+  "main": "worker/index.js",
+  "kv_namespaces": [
+    { "binding": "FEEDBACK", "id": "4b8ce0e23e494d72978d174663815118" }
+  ],
+
   "assets": {
     // Where `next build` puts the static export, per output: "export" in next.config.ts.
     "directory": "./out",
+    "binding": "ASSETS",
     // Serve /price/dasani-15l from price/dasani-15l.html, and fall back to the 404 page
     // rather than a bare error. Matches how Vercel and Azure resolve these routes.
     "not_found_handling": "404-page",
