@@ -1,32 +1,18 @@
 {
-  // Cloudflare has merged Pages into Workers, and new accounts often only get the Workers
-  // creation flow -- which asks for a deploy command rather than a build output directory.
-  // This config is what tells `npx wrangler deploy` that the thing being deployed is a
-  // folder of static files, not a script.
+  // This is a Cloudflare PAGES project (git-connected, serving egyptprice.com), so this
+  // config uses the Pages flavour: pages_build_output_dir marks it as such, functions/
+  // is picked up by file-based routing, and the KV binding below is applied to the
+  // project at build time.
   //
-  // With this present, the Workers flow works for a static export:
-  //   Build command:  npm run build
-  //   Deploy command: npx wrangler deploy
+  // An earlier revision used the Workers flavour (main + assets). Pages builds silently
+  // ignore that, which shipped the frontend without its API: the rating widget rendered,
+  // POST /api/feedback hit the bare asset layer, and every tap failed with a 405.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "egypt-price-check",
   "compatibility_date": "2026-07-01",
+  "pages_build_output_dir": "./out",
 
-  // The one dynamic endpoint on an otherwise static site: POST /api/feedback stores an
-  // anonymous thumbs rating (and optional note) in KV. Requests that match a built file
-  // are served as assets and never reach the worker, so the worker only ever sees /api/*
-  // and unknown paths, which it hands back to the asset layer for the 404 page.
-  "main": "worker/index.js",
   "kv_namespaces": [
     { "binding": "FEEDBACK", "id": "4b8ce0e23e494d72978d174663815118" }
-  ],
-
-  "assets": {
-    // Where `next build` puts the static export, per output: "export" in next.config.ts.
-    "directory": "./out",
-    "binding": "ASSETS",
-    // Serve /price/dasani-15l from price/dasani-15l.html, and fall back to the 404 page
-    // rather than a bare error. Matches how Vercel and Azure resolve these routes.
-    "not_found_handling": "404-page",
-    "html_handling": "auto-trailing-slash"
-  }
+  ]
 }
