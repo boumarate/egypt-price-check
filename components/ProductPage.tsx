@@ -15,16 +15,21 @@ import {
 } from "@/lib/currency";
 import { priceBands, type Zone } from "@/lib/pricing";
 import type { Product } from "@/lib/types";
+import ProductTile from "./ProductTile";
 
 interface Props {
   product: Product;
   zones: Zone[];
+  /** Question/answer pairs; the server page emits the matching FAQPage schema. */
+  faq?: { q: string; a: string }[];
+  /** Same-category products, for comparison hops and crawl paths. */
+  related?: Product[];
 }
 
 const ZONE_KEY = "zone-v1";
 const CURRENCY_KEY = "currency-v1";
 
-export default function ProductPage({ product, zones }: Props) {
+export default function ProductPage({ product, zones, faq = [], related = [] }: Props) {
   const [rates, setRates] = useState<Record<string, number>>(FALLBACK_RATES);
 
   const isKnownZone = useCallback((id: string) => zones.some((z) => z.id === id), [zones]);
@@ -168,6 +173,46 @@ export default function ProductPage({ product, zones }: Props) {
             : `Supermarket baseline from Carrefour Egypt, verified ${product.updated}. Regional markups are estimates.`}
         </p>
       </section>
+
+      {faq.length > 0 && (
+        <section className="mt-8">
+          <h2 className="mb-3 text-lg font-bold text-slate-900 dark:text-slate-50">
+            Common questions
+          </h2>
+          <div className="space-y-2">
+            {faq.map((item) => (
+              <details
+                key={item.q}
+                className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-900/5 dark:bg-slate-900 dark:ring-white/10"
+              >
+                <summary className="cursor-pointer text-sm font-semibold text-slate-900 dark:text-slate-50">
+                  {item.q}
+                </summary>
+                <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {related.length > 0 && (
+        <section className="mt-8">
+          <h2 className="mb-3 text-lg font-bold text-slate-900 dark:text-slate-50">
+            Compare with
+          </h2>
+          <div className="grid grid-cols-2 gap-3">
+            {related.map((item) => (
+              <ProductTile
+                key={item.id}
+                product={item}
+                zone={zone}
+                currency={currency}
+                rates={rates}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
       <RateWidget />
       <EmergencyNumbers />

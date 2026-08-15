@@ -53,3 +53,37 @@ function JsonLd({ data }: { data: Record<string, unknown> }) {
     />
   );
 }
+
+/**
+ * FAQPage markup, fed by the same array that renders the visible questions.
+ *
+ * One source for both matters: schema that says things the page does not visibly say is
+ * against Google's guidelines, and the visible text is the real ranking asset anyway --
+ * these are the exact sentences people type into Google.
+ */
+export function FaqJsonLd({ faq }: { faq: { q: string; a: string }[] }) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  };
+  return <JsonLd data={data} />;
+}
+
+/** Breadcrumbs help engines understand the site shape and can show in results. */
+export function BreadcrumbJsonLd({ name, id }: { name: string; id: string }) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Egypt prices", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name, item: absolute(`/price/${id}`) },
+    ],
+  };
+  return <JsonLd data={data} />;
+}
+
