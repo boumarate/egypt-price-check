@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Fuse from "fuse.js";
 import Link from "next/link";
 import ProductCard from "./ProductCard";
+import ProductTile from "./ProductTile";
 import EmergencyNumbers from "./EmergencyNumbers";
 import { usePersisted } from "@/lib/usePersisted";
 import {
@@ -204,28 +205,57 @@ export default function PriceChecker({ products, zones }: Props) {
         </div>
       )}
 
-      <div className="mt-3 space-y-3">
-        {results.length === 0 ? (
-          <p className="rounded-2xl border border-dashed border-slate-300 p-8 text-center text-slate-500 dark:border-slate-700 dark:text-slate-400">
-            Nothing matches &ldquo;{query}&rdquo;. Try &ldquo;water&rdquo; or
-            &ldquo;chips&rdquo;. Missing something?{" "}
-            <Link href="/feedback" className="underline underline-offset-2">
-              Tell me
-            </Link>
-            .
-          </p>
-        ) : (
-          results.map((product) => (
-            <ProductCard
+      {/* Browsing gets a two-up grid of tiles (six-plus products per screen instead of
+          two); a search that narrows to a couple of hits swaps to the full cards so the
+          check-this-quote flow stays zero taps. Tiles link to the product pages, which
+          are prerendered and precached, so the tap-through works offline too. */}
+      {results.length === 0 ? (
+        <p className="mt-3 rounded-2xl border border-dashed border-slate-300 p-8 text-center text-slate-500 dark:border-slate-700 dark:text-slate-400">
+          Nothing matches &ldquo;{query}&rdquo;. Try &ldquo;water&rdquo; or
+          &ldquo;chips&rdquo;. Missing something?{" "}
+          <Link href="/feedback" className="underline underline-offset-2">
+            Tell me
+          </Link>
+          .
+        </p>
+      ) : query.trim() ? (
+        // Searching means "I am holding this thing": the best match opens as the full
+        // card so the price check is zero taps away, and the runner-up matches sit in a
+        // grid beneath in case the top hit was the wrong variant.
+        <div className="mt-3 space-y-3">
+          <ProductCard
+            product={results[0]}
+            zone={zone}
+            currency={currency}
+            rates={rates}
+          />
+          {results.length > 1 && (
+            <div className="grid grid-cols-2 gap-3">
+              {results.slice(1).map((product) => (
+                <ProductTile
+                  key={product.id}
+                  product={product}
+                  zone={zone}
+                  currency={currency}
+                  rates={rates}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="mt-3 grid grid-cols-2 gap-3">
+          {results.map((product) => (
+            <ProductTile
               key={product.id}
               product={product}
               zone={zone}
               currency={currency}
               rates={rates}
             />
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
 
         <EmergencyNumbers />
       </div>
